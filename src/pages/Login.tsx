@@ -7,7 +7,7 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
-    const [showErr, setShowErr] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
 
     const handleNameChange = (e: { target: { value: string; }; }) => {
         setName(e.target.value);
@@ -35,18 +35,20 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
                 setAuth(true);
                 navigate('/search');
             } else {
-                setShowErr(true);
+                setErrMsg('Please ensure all fields are filled in correctly.');
             }
+        } else {
+            setErrMsg('Please ensure all fields are filled in.');
         }
     };
 
     return (
-        <div className="page-container">
+        <div id="login-component" className="page-container">
             <Typography variant="h2">Pawfect Match</Typography>
             <TextField label="Name" required={true} variant="standard" onChange={handleNameChange} />
             <TextField label="Email" required={true} type="email" variant="standard" onChange={handleEmailChange} />
-            <Button variant="contained" onClick={handleSubmit}>Log in</Button>
-            {showErr ? <div>Please ensure all fields are filled in correctly.</div> : null}
+            <Button id="login-button" variant="contained" onClick={handleSubmit}>Log in</Button>
+            {errMsg ? <i>{errMsg}</i> : null}
         </div>
     );
 }

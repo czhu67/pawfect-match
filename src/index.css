@@ -21,10 +21,13 @@ html {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+#login-component {
   text-align: center;
 }
 
-.page-container > button {
+#login-button {
   margin: 20px 0;
 }
 
