@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@mui/material";
 import { API_ENDPOINT } from "../App";
 
 export default function Search() {
-    const [activeFilter, setActiveFilter] = useState("");
-    const [breedList, setBreedList] = useState([]);
+    const [breedFilter, setBreedFilter] = useState([]);
+    const [allBreeds, setAllBreeds] = useState([]);
 
-    const getBreeds = () => {getData();}
+    const getBreeds = () => { getData(); }
     useEffect(getBreeds, []);
 
     const getData = async () => {
@@ -21,12 +21,12 @@ export default function Search() {
         });
         if (response.ok) {
             const breeds = await response.json();
-            setBreedList(breeds);
+            setAllBreeds(breeds);
         }
     }
 
     const handleFilterChange = (e: { target: { value: string; }; }) => {
-        setActiveFilter(e.target.value);
+        console.log(e.target.value);
     }
 
     return (
@@ -35,11 +35,17 @@ export default function Search() {
                 <InputLabel>Breed</InputLabel>
                 <Select
                     label="Breed"
-                    value={activeFilter}
+                    multiple={true}
+                    value={breedFilter}
                     onChange={handleFilterChange}
                 >
                     <MenuItem value=""></MenuItem>
-                    {breedList.map(breed => <MenuItem key={breed} value={breed}>{breed}</MenuItem>)}
+                    {allBreeds.map(breed => (
+                        <MenuItem key={breed} value={breed}>
+                            <Checkbox checked={breedFilter.includes(breed)} />
+                            <ListItemText primary={breed} />
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
             <Link to="/"></Link>

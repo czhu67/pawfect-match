@@ -28,7 +28,8 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
                     'email': email,
                     'name': name,
                 }),
-                redirect: 'follow'
+                redirect: 'follow',
+                credentials: 'include',
             });
 
             if (response.ok) {
