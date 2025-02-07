@@ -1,14 +1,52 @@
-import { Link } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, TextField, Typography } from "@mui/material";
+import { API_ENDPOINT } from "../App";
 
-export default function Login() {
+export default function Login({ setAuth }: { setAuth: (auth: boolean) => void }) {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const navigate = useNavigate();
+    const [showErr, setShowErr] = useState(false);
+
+    const handleNameChange = (e: { target: { value: string; }; }) => {
+        setName(e.target.value);
+    };
+
+    const handleEmailChange = (e: { target: { value: string; }; }) => {
+        setEmail(e.target.value)
+    };
+
+    const handleSubmit = async () => {
+        if (name && email) {
+            const response = await fetch(`${API_ENDPOINT}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'email': email,
+                    'name': name,
+                }),
+                redirect: 'follow'
+            });
+
+            if (response.ok) {
+                setAuth(true);
+                navigate('/search');
+            } else {
+                setShowErr(true);
+            }
+        }
+    };
+
     return (
-        <div>
-            <TextField id="standard-basic" label="Name" variant="standard" />
-            <TextField id="standard-basic" label="Email" variant="standard" />
-            <Link to="/search">
-                <Button variant="contained">Log in</Button>
-            </Link>
+        <div className="page-container">
+            <Typography variant="h2">Pawfect Match</Typography>
+            <TextField label="Name" required={true} variant="standard" onChange={handleNameChange} />
+            <TextField label="Email" required={true} type="email" variant="standard" onChange={handleEmailChange} />
+            <Button variant="contained" onClick={handleSubmit}>Log in</Button>
+            {showErr ? <div>Please ensure all fields are filled in correctly.</div> : null}
         </div>
     );
 }
