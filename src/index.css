@@ -1,4 +1,34 @@
-:root {
+* {
+  font-family: Roboto;
+}
+
+html {
+  height: 80%;
+  width: 100%;
+  align-content: center;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.page-container {
+  max-width: 600px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.page-container > button {
+  margin: 20px 0;
+}
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +95,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
