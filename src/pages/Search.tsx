@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@mui/material";
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { API_ENDPOINT } from "../App";
+import ResultsTable from "./components/ResultsTable";
 
 export default function Search() {
-    const [breedFilter, setBreedFilter] = useState([]);
-    const [allBreeds, setAllBreeds] = useState([]);
+    const [breedFilter, setBreedFilter] = useState<string[]>([]);
+    const [allBreeds, setAllBreeds] = useState<string[]>([]);
 
     const getBreeds = () => { getData(); }
     useEffect(getBreeds, []);
@@ -19,28 +20,29 @@ export default function Search() {
             redirect: 'follow',
             credentials: 'include',
         });
+
         if (response.ok) {
             const breeds = await response.json();
             setAllBreeds(breeds);
         }
-    }
+    };
 
-    const handleFilterChange = (e: { target: { value: string; }; }) => {
-        console.log(e.target.value);
-    }
+    const handleFilterChange = (event: SelectChangeEvent<typeof breedFilter>) => {
+        const filterList = typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value;
+        setBreedFilter(filterList);
+    };
 
     return (
         <div className="page-container">
             <FormControl>
-                <InputLabel>Breed</InputLabel>
+                <InputLabel>Filter by Breed</InputLabel>
                 <Select
-                    label="Breed"
-                    multiple={true}
+                    multiple
                     value={breedFilter}
                     onChange={handleFilterChange}
+                    renderValue={(selected) => selected.join(', ')}
                 >
-                    <MenuItem value=""></MenuItem>
-                    {allBreeds.map(breed => (
+                    {allBreeds.map((breed) => (
                         <MenuItem key={breed} value={breed}>
                             <Checkbox checked={breedFilter.includes(breed)} />
                             <ListItemText primary={breed} />
@@ -48,7 +50,8 @@ export default function Search() {
                     ))}
                 </Select>
             </FormControl>
+            <ResultsTable />
             <Link to="/"></Link>
         </div>
     );
-}
+};
