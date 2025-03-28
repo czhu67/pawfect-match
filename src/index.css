@@ -16,8 +16,6 @@ html {
 }
 
 .page-container {
-  max-width: 600px;
-  width: 80%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -29,6 +27,14 @@ html {
 
 #login-button {
   margin: 20px 0;
+}
+
+#login-form {
+  max-width: 600px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 /* :root {

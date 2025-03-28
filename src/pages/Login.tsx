@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
-import { API_ENDPOINT } from "../App";
+import { getData } from "../assets/utils";
 
 export default function Login({ setAuth }: { setAuth: (auth: boolean) => void }) {
     const [name, setName] = useState('');
@@ -19,18 +19,11 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
 
     const handleSubmit = async () => {
         if (name && email) {
-            const response = await fetch(`${API_ENDPOINT}/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    'email': email,
-                    'name': name,
-                }),
-                redirect: 'follow',
-                credentials: 'include',
+            const body = JSON.stringify({
+                'email': email,
+                'name': name,
             });
+            const response = await getData('/auth/login', 'POST', body);
 
             if (response.ok) {
                 setAuth(true);
@@ -46,10 +39,12 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
     return (
         <div id="login-component" className="page-container">
             <Typography variant="h2">Pawfect Match</Typography>
-            <TextField label="Name" required={true} variant="standard" onChange={handleNameChange} />
-            <TextField label="Email" required={true} type="email" variant="standard" onChange={handleEmailChange} />
-            <Button id="login-button" variant="contained" onClick={handleSubmit}>Log in</Button>
-            {errMsg ? <i>{errMsg}</i> : null}
+            <div id="login-form">
+                <TextField label="Name" required={true} variant="standard" onChange={handleNameChange} />
+                <TextField label="Email" required={true} type="email" variant="standard" onChange={handleEmailChange} />
+                <Button id="login-button" variant="contained" onClick={handleSubmit}>Log in</Button>
+                {errMsg ? <i>{errMsg}</i> : null}
+            </div>
         </div>
     );
 }
