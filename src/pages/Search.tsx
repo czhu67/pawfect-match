@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Checkbox, Grid2, InputLabel, ListItemText, MenuItem, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
-import { API_ENDPOINT } from "../App";
+import { Button, FormControl, Grid2, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
 import ResultsTable from "./components/ResultsTable";
 import { getData } from "../assets/utils";
 
@@ -16,7 +15,7 @@ export default function Search() {
     useEffect(() => {
         getBreeds();
         getDogs();
-    }, []);
+    });
 
     const getBreeds = async () => {
         const response = await getData('/dogs/breeds', 'GET');
@@ -36,14 +35,12 @@ export default function Search() {
             ageMax: String(ageRange[1]),
         };
 
-        for (const key in paramValues) {
-            if (Boolean(paramValues[key])) {
-                urlParams.append(key, JSON.stringify(paramValues[key]));
+        for (const [key, value] of Object.entries(paramValues)) {
+            if (value) {
+                urlParams.append(key, JSON.stringify(value));
             }
         }
 
-        const params = new URLSearchParams({"breed": "null"});
-        console.log(params.toString());
         const response = await getData(`/dogs/search?${''}`, 'GET');
 
         if (response.ok) {
@@ -66,26 +63,25 @@ export default function Search() {
         <div className="page-container">
             <Grid2 container size={12} spacing={2}>
                 <Grid2 size={3.5} sx={{ display: "flex", flexDirection: "column" }}>
-                    <Select
-                        sx={{ height: "100%" }}
-                        multiple
-                        displayEmpty
-                        value={breedFilter}
-                        onChange={handleBreedFilterChange}
-                        renderValue={(selected) => {
-                            if (selected.length === 0) {
-                                return <span style={{ color: "rgba(0, 0, 0, 0.6)" }}>Breed</span>;
-                            }
-                            return selected.join(', ');
-                        }}
-                    >
-                        {allBreeds.map((breed) => (
-                            <MenuItem key={breed} value={breed}>
-                                <Checkbox checked={breedFilter.includes(breed)} />
-                                <ListItemText primary={breed} />
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <FormControl>
+                        <InputLabel id="breed-label">Breed</InputLabel>
+                        <Select
+                            labelId="breed-label"
+                            multiple
+                            value={breedFilter}
+                            onChange={handleBreedFilterChange}
+                            input={<OutlinedInput label="Breed" />}
+                        >
+                            {allBreeds.map((breed) => (
+                                <MenuItem
+                                    key={breed}
+                                    value={breed}
+                                >
+                                    {breed}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Grid2>
                 <Grid2 size={3.5}>
                     <TextField sx={{ width: "100%" }} label="Zip Code" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
@@ -93,18 +89,18 @@ export default function Search() {
                 <Grid2 size={3.5} sx={{ textAlign: "center" }}>
                     <InputLabel>Age</InputLabel>
                     <Slider
-                        sx={{ width: "90%" }}
+                        sx={{ width: "90%", '& .MuiSlider-valueLabel': { backgroundColor: "unset", top: "2em", fontSize: "0.7em" } }}
                         value={ageRange}
                         onChange={handleAgeChange}
-                        valueLabelDisplay="auto"
-                        max={20}
+                        valueLabelDisplay="on"
+                        max={15}
                     />
                 </Grid2>
                 <Grid2 size={1.5} sx={{ alignContent: "center", textAlign: "right" }}>
-                    <Button variant="contained" onClick={getDogs}>Search</Button>
+                    <Button id="search-button" variant="contained" onClick={getDogs}>Search</Button>
                 </Grid2>
             </Grid2>
-            <ResultsTable dogIdList={dogSearch} order={order} setOrder={setOrder}/>
+            <ResultsTable dogIdList={dogSearch} order={order} setOrder={setOrder} />
             <Link to="/"></Link>
         </div>
     );
