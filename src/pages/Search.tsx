@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, FormControl, Grid2, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
+import { Autocomplete, Button, Chip, FormControl, Grid2, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
 import ResultsTable from "./components/ResultsTable";
 import { getData } from "../assets/utils";
 
@@ -8,14 +8,13 @@ export default function Search() {
     const [breedFilter, setBreedFilter] = useState<string[]>([]);
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
     const [ageRange, setAgeRange] = useState([0, 30]);
-    const [zipCode, setZipCode] = useState('');
-    const [dogSearch, setDogSearch] = useState([]);
-    const [order, setOrder] = useState('ASC');
+    const [zipCodes, setZipCodes] = useState<string[]>([]);
+    const [dogSearch, setDogSearch] = useState({ next: "", resultIds: [], total: 0});
 
     useEffect(() => {
         getBreeds();
         getDogs();
-    });
+    }, []);
 
     const getBreeds = async () => {
         const response = await getData('/dogs/breeds', 'GET');
@@ -25,12 +24,13 @@ export default function Search() {
             setAllBreeds(breeds);
         }
     };
+    console.log(dogSearch);
 
     const getDogs = async () => {
         const urlParams = new URLSearchParams();
         const paramValues = {
             breeds: JSON.stringify(breedFilter),
-            zipCodes: JSON.stringify([zipCode]),
+            zipCodes: JSON.stringify(zipCodes),
             ageMin: String(ageRange[0]),
             ageMax: String(ageRange[1]),
         };
@@ -46,7 +46,6 @@ export default function Search() {
         if (response.ok) {
             const dogIds = await response.json();
             setDogSearch(dogIds);
-            console.log(dogIds);
         }
     }
 
@@ -84,7 +83,20 @@ export default function Search() {
                     </FormControl>
                 </Grid2>
                 <Grid2 size={3.5}>
-                    <TextField sx={{ width: "100%" }} label="Zip Code" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                    <Autocomplete
+                        options={[]}
+                        freeSolo
+                        multiple
+                        renderTags={(value, props) =>
+                            value.map((option, index) => (
+                                <Chip label={option} {...props({ index })} />
+                            ))
+                        }
+                        renderInput={(params) => <TextField label="Zip Code" {...params} />}
+                        onChange={(event, newValue) => {
+                            setZipCodes(newValue)
+                        }}
+                    />
                 </Grid2>
                 <Grid2 size={3.5} sx={{ textAlign: "center" }}>
                     <InputLabel>Age</InputLabel>
@@ -100,8 +112,7 @@ export default function Search() {
                     <Button id="search-button" variant="contained" onClick={getDogs}>Search</Button>
                 </Grid2>
             </Grid2>
-            <ResultsTable dogIdList={dogSearch} order={order} setOrder={setOrder} />
-            <Link to="/"></Link>
+            <ResultsTable dogData={dogSearch}/>
         </div>
     );
 };
