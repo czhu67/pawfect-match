@@ -13,13 +13,15 @@ interface Dog {
 };
 
 interface ResultsTableProps {
-    dogIdList: string[],
-    order: string,
-    setOrder: (value: string) => void,
+    dogData: {
+        next: string,
+        resultIds: string[],
+        total: number
+    },
 };
 
-export default function ResultsTable({dogIdList, order, setOrder} : ResultsTableProps) {
-    const [sort, setSort] = useState('ASC');
+export default function ResultsTable({ dogData }: ResultsTableProps) {
+    const [sort, setSort] = useState("ASC");
     const [visibleRows, setVisibleRows] = useState<Dog[]>([]);
     const [dogList, setDogList] = useState<Dog[]>([]);
     const [page, setPage] = useState(0);

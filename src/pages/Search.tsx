@@ -9,7 +9,7 @@ export default function Search() {
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
     const [ageRange, setAgeRange] = useState([0, 30]);
     const [zipCodes, setZipCodes] = useState<string[]>([]);
-    const [dogSearch, setDogSearch] = useState({ next: "", resultIds: [], total: 0});
+    const [dogSearch, setDogSearch] = useState({ next: "", resultIds: [], total: 0 });
 
     useEffect(() => {
         getBreeds();
@@ -88,9 +88,11 @@ export default function Search() {
                         freeSolo
                         multiple
                         renderTags={(value, props) =>
-                            value.map((option, index) => (
-                                <Chip label={option} {...props({ index })} />
-                            ))
+                            <div id="chip-container">
+                                {value.slice(0).reverse().map((option, index) => (
+                                    <Chip label={option} {...props({ index: value.length - index - 1 })} />
+                                ))}
+                            </div>
                         }
                         renderInput={(params) => <TextField label="Zip Code" {...params} />}
                         onChange={(event, newValue) => {
@@ -112,7 +114,7 @@ export default function Search() {
                     <Button id="search-button" variant="contained" onClick={getDogs}>Search</Button>
                 </Grid2>
             </Grid2>
-            <ResultsTable dogData={dogSearch}/>
+            <ResultsTable dogData={dogSearch} />
         </div>
     );
 };

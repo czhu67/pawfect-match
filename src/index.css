@@ -51,6 +51,19 @@ html {
   width: 100%;
 }
 
+div.css-o5oj2-MuiAutocomplete-root div.MuiAutocomplete-inputRoot {
+  max-height: 57px;
+  flex-wrap: nowrap;
+}
+
+#chip-container {
+  display: flex;
+  align-items: right;
+  max-width: 90%;
+  overflow-x: scroll;
+  flex-direction: row-reverse;
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
