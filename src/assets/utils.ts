@@ -13,7 +13,7 @@ export const getData = async (endpoint: string, method: string, body?: string) =
 };
 
 export interface Sort {
-	breed?: string,
-	name?: string,
-	age?: string,
+	breed?: string;
+	name?: string;
+	age?: string;
 }

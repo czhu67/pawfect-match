@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
-import { Autocomplete, Button, Chip, FormControl, Grid2, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Slider, TablePagination, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, Grid2 as Grid, IconButton, TablePagination, Typography } from "@mui/material";
 import ResultsTable from "./components/ResultsTable";
 import { getData, Sort } from "../assets/utils";
+import { Pets, Logout } from '@mui/icons-material';
+import BreedSelect from "./components/BreedSelect";
+import ZipInput from "./components/ZipInput";
+import AgeSlider from "./components/AgeSlider";
+
+interface SearchProps {
+    favList: string[];
+};
 
 export interface DogData {
-    resultIds?: string[],
-    total?: number
-    next?: string,
-    prev?: string,
-}
+    resultIds?: string[];
+    total?: number;
+    next?: string;
+    prev?: string;
+};
 
-export default function Search() {
+export default function Search({favList}: SearchProps) {
+    const navigate = useNavigate();
     const [breedFilter, setBreedFilter] = useState<string[]>([]);
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
     const [ageRange, setAgeRange] = useState([0, 15]);
@@ -18,7 +28,6 @@ export default function Search() {
     const [dogSearch, setDogSearch] = useState<DogData>({ next: "", resultIds: [], total: 0 });
     const [sort, setSort] = useState<Sort>({ breed: 'asc' });
     const [page, setPage] = useState(0);
-    const ROWS_PER_PAGE = 25;
 
     useEffect(() => {
         getBreeds();
@@ -65,13 +74,9 @@ export default function Search() {
         }
     }
 
-    const handleBreedFilterChange = (event: SelectChangeEvent<typeof breedFilter>) => {
-        const filterList = typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value;
-        setBreedFilter(filterList);
-    };
-
-    const handleAgeChange = (_: Event, newValue: number | number[]) => {
-        setAgeRange(newValue as number[]);
+    const logout = () => {
+        navigate('/');
+        window.location.reload();
     };
 
     const handleChangePage = async (_: unknown, newPage: number) => {
@@ -93,68 +98,49 @@ export default function Search() {
 
     return (
         <div className="page-container">
-            <Grid2 container size={12} spacing={2}>
-                <Grid2 size={3.5} sx={{ display: "flex", flexDirection: "column" }}>
-                    <FormControl>
-                        <InputLabel id="breed-label">Breeds</InputLabel>
-                        <Select
-                            labelId="breed-label"
-                            multiple
-                            value={breedFilter}
-                            onChange={handleBreedFilterChange}
-                            input={<OutlinedInput label="Breeds" />}
-                        >
-                            {allBreeds.map((breed) => (
-                                <MenuItem
-                                    key={breed}
-                                    value={breed}
-                                >
-                                    {breed}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid2>
-                <Grid2 size={3.5}>
-                    <Autocomplete
-                        className="zip-input"
-                        options={[]}
-                        freeSolo
-                        multiple
-                        renderTags={(value, props) =>
-                            <div id="chip-container">
-                                {value.slice(0).reverse().map((option, index) => (
-                                    <Chip label={option} {...props({ index: value.length - index - 1 })} />
-                                ))}
-                            </div>
-                        }
-                        renderInput={(params) => <TextField label="Zip Codes" {...params} />}
-                        onChange={(_, newValue) => {
-                            setZipCodes(newValue)
-                        }}
-                    />
-                </Grid2>
-                <Grid2 size={3.5} sx={{ textAlign: "center" }}>
-                    <InputLabel>Age Range</InputLabel>
-                    <Slider
-                        sx={{ width: "90%", '& .MuiSlider-valueLabel': { backgroundColor: "unset", top: "2em", fontSize: "0.7em" } }}
-                        value={ageRange}
-                        onChange={handleAgeChange}
-                        valueLabelDisplay="on"
-                        max={15}
-                    />
-                </Grid2>
-                <Grid2 size={1.5} sx={{ alignContent: "center", textAlign: "right" }}>
+            <Grid container size={12} spacing={2}>
+                <Grid size={11}>
+                    <Typography variant="h4">Pawfect Match <Pets /></Typography>
+                </Grid>
+                <Grid size={1} display="flex" justifyContent="end" alignItems="center">
+                    <IconButton aria-label="delete" onClick={logout}>
+                        <Logout />
+                    </IconButton>
+                </Grid>
+                <Grid size={3.5} sx={{ display: "flex", flexDirection: "column" }}>
+                    <BreedSelect breedFilter={breedFilter} setBreedFilter={setBreedFilter} allBreeds={allBreeds} />
+                </Grid>
+                <Grid size={3.5}>
+                    <ZipInput setZipCodes={setZipCodes} />
+                </Grid>
+                <Grid size={3.5} sx={{ textAlign: "center" }}>
+                    <AgeSlider ageRange={ageRange} setAgeRange={setAgeRange} />
+                </Grid>
+                <Grid size={1.5} sx={{ alignContent: "center", textAlign: "right" }}>
                     <Button id="search-button" variant="contained" onClick={searchDogs}>Search</Button>
-                </Grid2>
-            </Grid2>
-            <ResultsTable dogData={dogSearch} sort={sort} setSort={setSort} />
+                </Grid>
+                <Grid size={12}>
+                    <Button
+                        id="match-button"
+                        variant="contained"
+                        size="large"
+                        disabled={favList.length ? false : true}
+                        onClick={() => navigate('/match')}
+                        startIcon={<Pets />}
+                        endIcon={<Pets />}>
+                        {favList.length ? "Find Fur-ever" : "Favorite some pups to find your match!"}
+                    </Button>
+                </Grid>
+                <Grid size={12}>
+                    <ResultsTable dogData={dogSearch} sort={sort} setSort={setSort} />
+                </Grid>
+            </Grid>
             <TablePagination
                 count={dogSearch.total || 0}
                 page={page}
                 rowsPerPageOptions={[]}
                 onPageChange={handleChangePage}
-                rowsPerPage={ROWS_PER_PAGE}
+                rowsPerPage={dogSearch.resultIds?.length || 0}
             />
         </div>
     );

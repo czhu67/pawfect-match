@@ -43,7 +43,7 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
                 <TextField label="Name" required={true} variant="standard" onChange={handleNameChange} />
                 <TextField label="Email" required={true} type="email" variant="standard" onChange={handleEmailChange} />
                 <Button id="login-button" variant="contained" onClick={handleSubmit}>Log in</Button>
-                {errMsg ? <i>{errMsg}</i> : null}
+                {errMsg ? <i id="err-msg">{errMsg}</i> : null}
             </div>
         </div>
     );
