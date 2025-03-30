@@ -78,16 +78,24 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
                 <TableRow>
                     <TableCell id="fav-col-header">
                         <IconButton className="table-header-wrapper">
-                            {favList.length ? <Favorite className="fav"/> : <FavoriteBorder className="fav-border"/>}
+                            {favList.length ? <Favorite className="fav" /> : <FavoriteBorder className="fav-border" />}
                         </IconButton>
                     </TableCell>
                     <TableCell id="img-col-header">Image</TableCell>
-                    <TableCell id="name-col-header">Name</TableCell>
-                    <TableCell align="center">Age</TableCell>
+                    <TableCell id="name-col-header">
+                        <div id="age-col-header" className="table-header-wrapper">
+                            Name {sort.name === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
+                        </div>
+                    </TableCell>
+                    <TableCell>
+                        <div id="age-col-header" className="table-header-wrapper">
+                            Age {sort.age === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
+                        </div>
+                    </TableCell>
                     <TableCell id="zip-col-header" align="center">Zip Code</TableCell>
                     <TableCell id="breed-col-header" onClick={toggleSort}>
                         <div className="table-header-wrapper">
-                            Breed {sort.breed === 'ASC' ? <ArrowUpward /> : <ArrowDownward />}
+                            Breed {sort.breed === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
                         </div>
                     </TableCell>
                 </TableRow>

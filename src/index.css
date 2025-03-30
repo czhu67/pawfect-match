@@ -64,6 +64,10 @@ html {
     height: 80%;
 }
 
+#match-button {
+    height: 50px;
+}
+
 #match-button:disabled {
     text-transform: none;
     color: inherit;
@@ -83,9 +87,21 @@ td.img-cell {
 #breed-col-header {
     width: 20%;
 }
+#age-col-header {
+    min-width: 100%;
+    justify-content: center;
+}
 
 #zip-col-header {
     white-space: nowrap;
+}
+
+.sort-arrow {
+    padding-left: 5px;
+}
+
+.sort-arrow:hover {
+    opacity: 40%;
 }
 
 .table-header-wrapper {
