@@ -83,7 +83,7 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
                     </TableCell>
                     <TableCell id="img-col-header">Image</TableCell>
                     <TableCell id="name-col-header">
-                        <div id="age-col-header" className="table-header-wrapper">
+                        <div className="table-header-wrapper">
                             Name {sort.name === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
                         </div>
                     </TableCell>

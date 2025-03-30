@@ -2,7 +2,7 @@ import { Autocomplete, Chip, TextField, Tooltip } from "@mui/material";
 
 export default function ZipInput({ setZipCodes }: { setZipCodes: (zips: string[]) => void }) {
     return (
-        <Tooltip title='Press "Enter" to input multiple Zip Codes' placement="top">
+        <Tooltip title='Press "Enter" to input a Zip Codes' placement="top">
             <Autocomplete
                 className="zip-input"
                 options={[]}
