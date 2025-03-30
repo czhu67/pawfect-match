@@ -77,6 +77,10 @@ html {
     width: 3rem;
 }
 
+#fav-header {
+    color: #757575;
+}
+
 #img-col-header,
 td.img-cell {
     width: 350px;

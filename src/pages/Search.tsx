@@ -20,7 +20,7 @@ export interface DogData {
     prev?: string;
 };
 
-export default function Search({favList, setFavList}: SearchProps) {
+export default function Search({ favList, setFavList }: SearchProps) {
     const navigate = useNavigate();
     const [breedFilter, setBreedFilter] = useState<string[]>([]);
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
@@ -29,6 +29,7 @@ export default function Search({favList, setFavList}: SearchProps) {
     const [dogSearch, setDogSearch] = useState<DogData>({ next: "", resultIds: [], total: 0 });
     const [sort, setSort] = useState<Sort>({ breed: 'asc' });
     const [page, setPage] = useState(0);
+    const [viewFavs, setViewFavs] = useState(false);
 
     useEffect(() => {
         getBreeds();
@@ -137,7 +138,7 @@ export default function Search({favList, setFavList}: SearchProps) {
                 </Grid>
             </Grid>
             <TablePagination
-                slots={{root: 'div'}}
+                slots={{ root: 'div' }}
                 count={dogSearch.total || 0}
                 page={page}
                 rowsPerPageOptions={[]}
