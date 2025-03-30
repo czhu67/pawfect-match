@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
 import { Dog, getData, getDogs } from "../assets/utils";
 import { Card, CardContent, Grid2 as Grid, Typography } from "@mui/material";
-import { Pets } from "@mui/icons-material";
 
-export default function Match({ favList }: { favList: string[] }) {
-    const [matchId, setMatchId] = useState<string>("");
+interface MatchProps {
+    favList: string[];
+    matchId: string;
+    setMatchId: (matchId: string) => void;
+}
+
+export default function Match({ favList, matchId, setMatchId }: MatchProps) {
     const [err, setErr] = useState(false);
     const [dog, setDog] = useState<Dog[]>([]);
 
     useEffect(() => {
-        getMatch();
+        if (!matchId) {
+            getMatch();
+        }
     }, []);
 
     useEffect(() => {
         getDogs([matchId], setDog);
     }, [matchId]);
 
-    console.log(dog);
 
     const getMatch = async () => {
         const response = await getData('/dogs/match', 'POST', JSON.stringify(favList));

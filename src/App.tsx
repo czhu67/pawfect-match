@@ -7,6 +7,7 @@ import Match from "./pages/Match";
 export default function App() {
     const [auth, setAuth] = useState<boolean>(false);
     const [favList, setFavList] = useState<string[]>([]);
+    const [matchId, setMatchId] = useState<string>("");
     const unauthDisplay = (<div id="unauth-container">
         <img src="/unauthorized.jpg" width="500px"/>
         <br/>
@@ -18,7 +19,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Login setAuth={setAuth} />}></Route>
                 <Route path="/search" element={auth ? <Search favList={favList} setFavList={setFavList}/> : unauthDisplay}></Route>
-                <Route path="/match" element={auth ? <Match favList={favList}/> : unauthDisplay}></Route>
+                <Route path="/match" element={auth ? <Match favList={favList} matchId={matchId} setMatchId={setMatchId}/> : unauthDisplay}></Route>
             </Routes>
         </BrowserRouter>
     );
