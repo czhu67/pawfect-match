@@ -17,3 +17,21 @@ export interface Sort {
 	name?: string;
 	age?: string;
 }
+
+export interface Dog {
+    id: string;
+    img: string;
+    name: string;
+    age: number;
+    zip_code: string;
+    breed: string;
+};
+
+export const getDogs = async (dogIds: string[], callback: (dogs: Dog[]) => void) => {
+    const response = await getData('/dogs', 'POST', JSON.stringify(dogIds));
+
+    if (response.ok) {
+        const dogs = await response.json();
+        callback(dogs);
+    }
+}

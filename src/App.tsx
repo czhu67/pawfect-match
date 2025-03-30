@@ -7,7 +7,6 @@ import Match from "./pages/Match";
 export default function App() {
     const [auth, setAuth] = useState<boolean>(false);
     const [favList, setFavList] = useState<string[]>([]);
-
     const unauthDisplay = (<div id="unauth-container">
         <img src="/unauthorized.jpg" width="500px"/>
         <br/>

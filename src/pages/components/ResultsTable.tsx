@@ -1,7 +1,7 @@
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ArrowDownward, ArrowUpward, Favorite, FavoriteBorder } from '@mui/icons-material';
-import { getData, Sort } from "../../assets/utils";
+import { Dog, getDogs, Sort } from "../../assets/utils";
 import { DogData } from "../Search";
 
 interface ResultsTableProps {
@@ -12,32 +12,13 @@ interface ResultsTableProps {
     setFavList: (favList: string[]) => void;
 };
 
-interface Dog {
-    id: string;
-    img: string;
-    name: string;
-    age: number;
-    zip_code: string;
-    breed: string;
-};
-
 export default function ResultsTable({ dogData, sort, setSort, favList, setFavList }: ResultsTableProps) {
     const [dogList, setDogList] = useState<Dog[]>([]);
-
     const arrowVisCheck = (field: string) => `sort-arrow ${Object.keys(sort).includes(field) ? "arrow-visible" : null}`;
 
     useEffect(() => {
-        getDogs();
+        getDogs(dogData.resultIds, setDogList);
     }, [dogData]);
-
-    const getDogs = async () => {
-        const response = await getData('/dogs', 'POST', JSON.stringify(dogData.resultIds));
-
-        if (response.ok) {
-            const dogs = await response.json();
-            setDogList(dogs);
-        }
-    }
 
     const toggleSort = (field: 'name' | 'age' | 'breed') => {
         const newSort: Sort = {};
@@ -56,7 +37,6 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
             const copyFavList = [...favList];
             const index = favList.indexOf(dogId);
             copyFavList.splice(index, 1);
-            console.log(copyFavList);
             setFavList(copyFavList);
         } else {
             setFavList([...favList, dogId]);

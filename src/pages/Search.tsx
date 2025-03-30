@@ -14,8 +14,8 @@ interface SearchProps {
 };
 
 export interface DogData {
-    resultIds?: string[];
-    total?: number;
+    resultIds: string[];
+    total: number;
     next?: string;
     prev?: string;
 };
@@ -26,10 +26,9 @@ export default function Search({ favList, setFavList }: SearchProps) {
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
     const [ageRange, setAgeRange] = useState([0, 15]);
     const [zipCodes, setZipCodes] = useState<string[]>([]);
-    const [dogSearch, setDogSearch] = useState<DogData>({ next: "", resultIds: [], total: 0 });
+    const [dogSearch, setDogSearch] = useState<DogData>({ resultIds: [], total: 0 });
     const [sort, setSort] = useState<Sort>({ breed: 'asc' });
     const [page, setPage] = useState(0);
-    const [viewFavs, setViewFavs] = useState(false);
 
     useEffect(() => {
         getBreeds();
@@ -70,8 +69,8 @@ export default function Search({ favList, setFavList }: SearchProps) {
         const response = await getData(`/dogs/search?${urlParams.toString()}`, 'GET');
 
         if (response.ok) {
-            const dogIds = await response.json();
-            setDogSearch(dogIds);
+            const dogData = await response.json();
+            setDogSearch(dogData);
             setPage(0);
         }
     }

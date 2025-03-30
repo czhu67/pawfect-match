@@ -30,6 +30,7 @@ html {
 .page-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
     margin: 30px 40px;
 }
@@ -137,4 +138,32 @@ button:hover .fav-border, button:hover .fav {
 
 th:hover .arrow-visible, .arrow-visible {
     opacity: 100%;
+}
+
+#match-card {
+    border-radius: 10px;
+}
+
+#match-card-content {
+    background-color: l;
+    text-align: center;
+    width: max-content;
+    padding: 30px;
+}
+
+#match-card-content * {
+    margin: 10px;
+}
+
+#match-dog-img {
+    width: 400px;
+    height: auto;
+}
+
+#dog-bio * {
+    text-align: left;
+    margin: 0;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
 }
