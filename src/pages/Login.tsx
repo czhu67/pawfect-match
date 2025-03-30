@@ -39,6 +39,7 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
     return (
         <div id="login-component" className="page-container">
             <Typography variant="h2">Pawfect Match</Typography>
+
             <div id="login-form">
                 <TextField label="Name" required={true} variant="standard" onChange={handleNameChange} />
                 <TextField label="Email" required={true} type="email" variant="standard" onChange={handleEmailChange} />
