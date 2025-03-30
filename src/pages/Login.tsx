@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField, Typography } from "@mui/material";
+
 import { getData } from "../assets/utils";
 
 export default function Login({ setAuth }: { setAuth: (auth: boolean) => void }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const navigate = useNavigate();
     const [errMsg, setErrMsg] = useState('');
+    const navigate = useNavigate();
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);

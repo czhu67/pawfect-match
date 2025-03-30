@@ -1,6 +1,7 @@
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
 import { ArrowDownward, ArrowUpward, Favorite, FavoriteBorder } from '@mui/icons-material';
+
 import { Dog, getDogs, Sort } from "../../assets/utils";
 import { DogData } from "../Search";
 
@@ -48,7 +49,9 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
             <TableHead>
                 <TableRow>
                     <TableCell id="fav-col-header">
-                        {favList.length ? <Favorite id="fav-header" className="fav" /> : <FavoriteBorder id="fav-header" className="fav-border" />}
+                        <Tooltip title={`${favList.length} dogs favorited`}>
+                            {favList.length ? <Favorite id="fav-header" className="fav" /> : <FavoriteBorder id="fav-header" className="fav-border" />}
+                        </Tooltip>
                     </TableCell>
                     <TableCell id="img-col-header">Image</TableCell>
                     <TableCell id="name-col-header" onClick={() => toggleSort('name')}>

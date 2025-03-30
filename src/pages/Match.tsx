@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Dog, getData, getDogs } from "../assets/utils";
 import { Card, CardContent, Grid2 as Grid, Typography } from "@mui/material";
+
+import { Dog, getData, getDogs } from "../assets/utils";
+import Header from "./components/Header";
 
 interface MatchProps {
     favList: string[];
@@ -9,7 +11,6 @@ interface MatchProps {
 }
 
 export default function Match({ favList, matchId, setMatchId }: MatchProps) {
-    const [err, setErr] = useState(false);
     const [dog, setDog] = useState<Dog[]>([]);
 
     useEffect(() => {
@@ -22,20 +23,17 @@ export default function Match({ favList, matchId, setMatchId }: MatchProps) {
         getDogs([matchId], setDog);
     }, [matchId]);
 
-
     const getMatch = async () => {
         const response = await getData('/dogs/match', 'POST', JSON.stringify(favList));
         if (response.ok) {
             const matchResponse = await response.json();
             setMatchId(matchResponse.match || "");
-        } else {
-            setErr(true);
         }
     }
 
     return (
         <div className="page-container">
-            {err || !dog.length ? <Typography>Uh oh! There was an error finding your match. Please try again at a later time.</Typography> : null}
+            <Header />
             {dog.length ?
                 <Card id="match-card">
                     <CardContent id="match-card-content">
