@@ -131,3 +131,7 @@ button:hover .fav-border, button:hover .fav {
 .fav {
     color: #fa2b43;
 }
+
+.arrow-visible {
+    opacity: 100%;
+}
