@@ -1,4 +1,4 @@
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ArrowDownward, ArrowUpward, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { getData, Sort } from "../../assets/utils";
@@ -24,14 +24,11 @@ interface Dog {
 export default function ResultsTable({ dogData, sort, setSort, favList, setFavList }: ResultsTableProps) {
     const [dogList, setDogList] = useState<Dog[]>([]);
 
+    const arrowVisCheck = (field: string) => `sort-arrow ${Object.keys(sort).includes(field) ? "arrow-visible" : null}`;
+
     useEffect(() => {
         getDogs();
     }, [dogData]);
-
-    // useEffect(() => {
-    //     console.log('HERE', favList);
-    // }, [favList]);
-    console.log(favList);
 
     const getDogs = async () => {
         const response = await getData('/dogs', 'POST', JSON.stringify(dogData.resultIds));
@@ -42,22 +39,16 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
         }
     }
 
-    const toggleSort = (e: React.MouseEvent) => {
-        const innerText = (e.target as Element).parentElement?.innerText;
-        const field: string | 'breed' | 'name' | 'age' | undefined = innerText?.toLowerCase();
-
+    const toggleSort = (field: 'name' | 'age' | 'breed') => {
         const newSort: Sort = {};
 
-        if (field == 'breed' || field == 'name' || field == 'age') {
-            if (sort[field] == 'ASC') {
-                newSort[field] = 'DSC'
-                setSort(newSort);
-            } else {
-                newSort[field] = 'ASC'
-                setSort(newSort);
-            }
+        if (sort[field] == 'asc' && Object.keys(sort).includes(field)) {
+            newSort[field] = 'desc'
+            setSort(newSort);
+        } else if (sort[field] == 'desc' || !Object.keys(sort).includes(field)) {
+            newSort[field] = 'asc'
+            setSort(newSort);
         }
-
     };
 
     const toggleFav = (dogId: string) => {
@@ -77,25 +68,23 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
             <TableHead>
                 <TableRow>
                     <TableCell id="fav-col-header">
-                        <IconButton className="table-header-wrapper">
-                            {favList.length ? <Favorite className="fav" /> : <FavoriteBorder className="fav-border" />}
-                        </IconButton>
+                        {favList.length ? <Favorite id="fav-header" className="fav" /> : <FavoriteBorder id="fav-header" className="fav-border" />}
                     </TableCell>
                     <TableCell id="img-col-header">Image</TableCell>
-                    <TableCell id="name-col-header">
+                    <TableCell id="name-col-header" onClick={() => toggleSort('name')}>
                         <div className="table-header-wrapper">
-                            Name {sort.name === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
+                            Name {sort.name === 'desc' ? <ArrowDownward className={arrowVisCheck('name')} /> : <ArrowUpward className={arrowVisCheck('name')} />}
                         </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={() => toggleSort('age')}>
                         <div id="age-col-header" className="table-header-wrapper">
-                            Age {sort.age === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
+                            Age {sort.age === 'desc' ? <ArrowDownward className={arrowVisCheck('age')} /> : <ArrowUpward className={arrowVisCheck('age')} />}
                         </div>
                     </TableCell>
                     <TableCell id="zip-col-header" align="center">Zip Code</TableCell>
-                    <TableCell id="breed-col-header" onClick={toggleSort}>
+                    <TableCell id="breed-col-header" onClick={() => toggleSort('breed')}>
                         <div className="table-header-wrapper">
-                            Breed {sort.breed === 'ASC' ? <ArrowUpward className="sort-arrow" /> : <ArrowDownward className="sort-arrow" />}
+                            Breed {sort.breed === 'desc' ? <ArrowDownward className={arrowVisCheck('breed')} /> : <ArrowUpward className={arrowVisCheck('breed')} />}
                         </div>
                     </TableCell>
                 </TableRow>
@@ -113,13 +102,13 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
                             </TableCell>
                             <TableCell className="img-cell"><a target="_blank" href={dog.img}><img className="dog-img" src={dog.img} /></a></TableCell>
                             <TableCell>{dog.name}</TableCell>
-                            <TableCell align="center">{dog.age}</TableCell>
+                            <TableCell>{dog.age}</TableCell>
                             <TableCell align="center">{dog.zip_code}</TableCell>
                             <TableCell>{dog.breed}</TableCell>
                         </TableRow>
                     )
                 })}
             </TableBody>
-        </Table>
+        </Table >
     );
 };
