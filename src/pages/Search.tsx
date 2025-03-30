@@ -10,6 +10,7 @@ import AgeSlider from "./components/AgeSlider";
 
 interface SearchProps {
     favList: string[];
+    setFavList: (favList: string[]) => void;
 };
 
 export interface DogData {
@@ -19,7 +20,7 @@ export interface DogData {
     prev?: string;
 };
 
-export default function Search({favList}: SearchProps) {
+export default function Search({favList, setFavList}: SearchProps) {
     const navigate = useNavigate();
     const [breedFilter, setBreedFilter] = useState<string[]>([]);
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
@@ -132,10 +133,11 @@ export default function Search({favList}: SearchProps) {
                     </Button>
                 </Grid>
                 <Grid size={12}>
-                    <ResultsTable dogData={dogSearch} sort={sort} setSort={setSort} />
+                    <ResultsTable dogData={dogSearch} sort={sort} setSort={setSort} favList={favList} setFavList={setFavList}/>
                 </Grid>
             </Grid>
             <TablePagination
+                slots={{root: 'div'}}
                 count={dogSearch.total || 0}
                 page={page}
                 rowsPerPageOptions={[]}

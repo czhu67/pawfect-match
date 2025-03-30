@@ -4,6 +4,14 @@ import { ArrowDownward, ArrowUpward, Favorite, FavoriteBorder } from '@mui/icons
 import { getData, Sort } from "../../assets/utils";
 import { DogData } from "../Search";
 
+interface ResultsTableProps {
+    dogData: DogData;
+    sort: Sort;
+    setSort: (sort: Sort) => void;
+    favList: string[];
+    setFavList: (favList: string[]) => void;
+};
+
 interface Dog {
     id: string;
     img: string;
@@ -13,18 +21,16 @@ interface Dog {
     breed: string;
 };
 
-interface ResultsTableProps {
-    dogData: DogData;
-    sort: Sort;
-    setSort: React.Dispatch<React.SetStateAction<Sort>>;
-};
-
-export default function ResultsTable({ dogData, sort, setSort }: ResultsTableProps) {
+export default function ResultsTable({ dogData, sort, setSort, favList, setFavList }: ResultsTableProps) {
     const [dogList, setDogList] = useState<Dog[]>([]);
 
     useEffect(() => {
         getDogs();
     }, [dogData]);
+
+    useEffect(() => {
+
+    }, [favList]);
 
     const getDogs = async () => {
         const response = await getData('/dogs', 'POST', JSON.stringify(dogData.resultIds));
@@ -35,7 +41,7 @@ export default function ResultsTable({ dogData, sort, setSort }: ResultsTablePro
         }
     }
 
-    const toggleSort = (e: React.MouseEvent<HTMLTableCellElement, MouseEvent>) => {
+    const toggleSort = (e: React.MouseEvent) => {
         const innerText = (e.target as Element).parentElement?.innerText;
         const field: string | 'breed' | 'name' | 'age' | undefined = innerText?.toLowerCase();
 
@@ -53,11 +59,28 @@ export default function ResultsTable({ dogData, sort, setSort }: ResultsTablePro
 
     };
 
+    const favorite = (e: React.MouseEvent) => {
+        const element = e.target as HTMLElement;
+        if (element.parentElement?.id) {
+            setFavList([...favList, element.parentElement?.id]);
+        }
+    };
+
+    const unfavorite = (e: React.MouseEvent) => {
+        const element = e.target as HTMLElement;
+        if (element.parentElement?.id) {
+            const copyFavList = [...favList];
+            const index = favList.indexOf(element.parentElement.id);
+            copyFavList.splice(index, 1);
+            setFavList(copyFavList);
+        }
+    };
+
     return (
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell id="fav-col-header"><div className="table-header-wrapper"><FavoriteBorder /></div></TableCell>
+                    <TableCell id="fav-col-header"><div className="table-header-wrapper">{favList.length ? <Favorite /> : <FavoriteBorder />}</div></TableCell>
                     <TableCell id="img-col-header">Image</TableCell>
                     <TableCell id="name-col-header">Name</TableCell>
                     <TableCell align="center">Age</TableCell>
@@ -70,21 +93,25 @@ export default function ResultsTable({ dogData, sort, setSort }: ResultsTablePro
                 </TableRow>
             </TableHead>
             <TableBody>
-                {dogList.map((dog) => (
-                    <TableRow key={dog.id}>
-                        <TableCell className="fav-cell"><FavoriteBorder className="fav-border" /></TableCell>
-                        <TableCell className="img-cell"><a target="_blank" href={dog.img}><img className="dog-img" src={dog.img} /></a></TableCell>
-                        <TableCell>{dog.name}</TableCell>
-                        <TableCell align="center">{dog.age}</TableCell>
-                        <TableCell align="center">{dog.zip_code}</TableCell>
-                        <TableCell>{dog.breed}</TableCell>
-                    </TableRow>
-                ))}
-                {/* This is for the extra blank pages if there isn't enough dogs on one page - not necessary, just a style choice */}
-                {/* {dogList.length < ROWS_PER_PAGE && dogList.length > ROWS_PER_PAGE ?
-                        <TableRow style={{
-                            height: 53 * (ROWS_PER_PAGE - dogList.length),
-                        }} /> : null} */}
+                {dogList.map((dog) => {
+                    console.log(dog.id);
+                    console.log(favList);
+                    console.log('THIS DOG', dog.id, dog.id in favList);
+                    return (
+                        <TableRow key={dog.id}>
+                            <TableCell id={dog.id} className="fav-cell">
+                                {dog.id in favList ?
+                                    <Favorite className="fav" onClick={unfavorite} /> :
+                                    <FavoriteBorder className="fav-border" onClick={favorite} />}
+                            </TableCell>
+                            <TableCell className="img-cell"><a target="_blank" href={dog.img}><img className="dog-img" src={dog.img} /></a></TableCell>
+                            <TableCell>{dog.name}</TableCell>
+                            <TableCell align="center">{dog.age}</TableCell>
+                            <TableCell align="center">{dog.zip_code}</TableCell>
+                            <TableCell>{dog.breed}</TableCell>
+                        </TableRow>
+                    )
+                })}
             </TableBody>
         </Table>
     );

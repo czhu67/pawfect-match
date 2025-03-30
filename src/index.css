@@ -103,8 +103,18 @@ a:hover {
     cursor: zoom-in;
 }
 
+.fav-cell {
+    height: min-content;
+}
+
 .fav-border:hover {
     color: #ffa9a9;
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.fav:hover {
+    color: silver;
     cursor: pointer;
     scale: 1.1;
 }

@@ -9,11 +9,11 @@ export default function Login({ setAuth }: { setAuth: (auth: boolean) => void })
     const navigate = useNavigate();
     const [errMsg, setErrMsg] = useState('');
 
-    const handleNameChange = (e: { target: { value: string; }; }) => {
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
     };
 
-    const handleEmailChange = (e: { target: { value: string; }; }) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     };
 

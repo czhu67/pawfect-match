@@ -7,8 +7,8 @@ interface BreedSelectProps {
 };
 
 export default function BreedSelect({ breedFilter, setBreedFilter, allBreeds }: BreedSelectProps) {
-    const handleBreedFilterChange = (event: SelectChangeEvent<typeof breedFilter>) => {
-        const filterList = typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value;
+    const handleBreedFilterChange = (e: SelectChangeEvent<typeof breedFilter>) => {
+        const filterList = typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value;
         setBreedFilter(filterList);
     };
 
