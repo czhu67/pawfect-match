@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Grid2 as Grid, IconButton, TablePagination, Typography } from "@mui/material";
-import ResultsTable from "./components/ResultsTable";
+import { Button, Grid2 as Grid, TablePagination } from "@mui/material";
+import { Pets } from '@mui/icons-material';
+
 import { getData, Sort } from "../assets/utils";
-import { Pets, Logout } from '@mui/icons-material';
+import ResultsTable from "./components/ResultsTable";
 import BreedSelect from "./components/BreedSelect";
 import ZipInput from "./components/ZipInput";
 import AgeSlider from "./components/AgeSlider";
+import Header from "./components/Header";
 
 interface SearchProps {
     favList: string[];
@@ -21,7 +23,6 @@ export interface DogData {
 };
 
 export default function Search({ favList, setFavList }: SearchProps) {
-    const navigate = useNavigate();
     const [breedFilter, setBreedFilter] = useState<string[]>([]);
     const [allBreeds, setAllBreeds] = useState<string[]>([]);
     const [ageRange, setAgeRange] = useState([0, 15]);
@@ -29,6 +30,7 @@ export default function Search({ favList, setFavList }: SearchProps) {
     const [dogSearch, setDogSearch] = useState<DogData>({ resultIds: [], total: 0 });
     const [sort, setSort] = useState<Sort>({ breed: 'asc' });
     const [page, setPage] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getBreeds();
@@ -75,11 +77,6 @@ export default function Search({ favList, setFavList }: SearchProps) {
         }
     }
 
-    const logout = () => {
-        navigate('/');
-        window.location.reload();
-    };
-
     const handleChangePage = async (_: unknown, newPage: number) => {
         let endpoint = dogSearch.next;
         if (newPage < page && dogSearch.prev) {
@@ -99,15 +96,8 @@ export default function Search({ favList, setFavList }: SearchProps) {
 
     return (
         <div className="page-container">
+            <Header />
             <Grid container size={12} spacing={2}>
-                <Grid size={11}>
-                    <Typography variant="h4">Pawfect Match <Pets /></Typography>
-                </Grid>
-                <Grid size={1} display="flex" justifyContent="end" alignItems="center">
-                    <IconButton aria-label="delete" onClick={logout}>
-                        <Logout />
-                    </IconButton>
-                </Grid>
                 <Grid size={3.5} sx={{ display: "flex", flexDirection: "column" }}>
                     <BreedSelect breedFilter={breedFilter} setBreedFilter={setBreedFilter} allBreeds={allBreeds} />
                 </Grid>
@@ -133,7 +123,7 @@ export default function Search({ favList, setFavList }: SearchProps) {
                     </Button>
                 </Grid>
                 <Grid size={12}>
-                    <ResultsTable dogData={dogSearch} sort={sort} setSort={setSort} favList={favList} setFavList={setFavList}/>
+                    <ResultsTable dogData={dogSearch} sort={sort} setSort={setSort} favList={favList} setFavList={setFavList} />
                 </Grid>
             </Grid>
             <TablePagination

@@ -1,50 +1,15 @@
-# React + TypeScript + Vite
+# Pawfect Match
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application matches you with your furever friend! Log in, filter through a selection of dogs by breed, zip code, and age, select your favorite pups, and receive your match.
 
-Currently, two official plugins are available:
+## Technology
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a front-end project backed by a pre-existing backend. The UI was created using React with Typescript and [Material UI](https://mui.com/material-ui/getting-started/?srsltid=AfmBOoops4If-E8IthdMA86PsJ2QE04ZgCZ44300TT7qUhDrKBjjCTKk).
 
-## Expanding the ESLint configuration
+## Running Locally
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+After cloning the repo, run the following commands:
+1. [Download npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+2. Install all the necessary packages for this repo to run on your machine: `npm i`
+3. Start the local environment: `npm run dev`
+4. Open http://localhost:5173/ in your browser to start matching!

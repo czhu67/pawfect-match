@@ -52,6 +52,11 @@ html {
     flex-direction: column;
 }
 
+#header{
+    width: 100%;
+    margin-bottom: 16px;
+}
+
 #chip-container {
     display: flex;
     align-items: right;
@@ -142,6 +147,7 @@ th:hover .arrow-visible, .arrow-visible {
 
 #match-card {
     border-radius: 10px;
+    height: 100%;
 }
 
 #match-card-content {
@@ -156,8 +162,9 @@ th:hover .arrow-visible, .arrow-visible {
 }
 
 #match-dog-img {
-    width: 400px;
-    height: auto;
+    width: auto;
+    height: 35vh;
+    margin-bottom: 0;
 }
 
 #dog-bio * {
