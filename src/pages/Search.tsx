@@ -127,9 +127,9 @@ export default function Search({favList, setFavList}: SearchProps) {
                         size="large"
                         disabled={favList.length ? false : true}
                         onClick={() => navigate('/match')}
-                        startIcon={<Pets />}
-                        endIcon={<Pets />}>
-                        {favList.length ? "Find Fur-ever" : "Favorite some pups to find your match!"}
+                        startIcon={favList.length ? <Pets /> : null}
+                        endIcon={favList.length ? <Pets /> : null}>
+                        {favList.length ? "match me!" : "Favorite some pups to find your match!"}
                     </Button>
                 </Grid>
                 <Grid size={12}>

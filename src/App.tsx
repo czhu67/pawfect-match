@@ -9,7 +9,7 @@ export default function App() {
     const [favList, setFavList] = useState<string[]>([]);
 
     const unauthDisplay = (<div id="unauth-container">
-        <img src="./public/unauthorized.jpg" width="500px"/>
+        <img src="/unauthorized.jpg" width="500px"/>
         <br/>
         <span>That's ruff! Looks like you're not authorized.</span>
     </div>);

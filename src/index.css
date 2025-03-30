@@ -64,7 +64,7 @@ html {
     height: 80%;
 }
 
-#match-button {
+#match-button:disabled {
     text-transform: none;
     color: inherit;
 }
@@ -85,9 +85,7 @@ td.img-cell {
 }
 
 #zip-col-header {
-    display: flex;
-    justify-content: center;
-    min-width: max-content;
+    white-space: nowrap;
 }
 
 .table-header-wrapper {
@@ -107,14 +105,12 @@ a:hover {
     height: min-content;
 }
 
-.fav-border:hover {
+button:hover .fav-border, button:hover .fav {
     color: #ffa9a9;
     cursor: pointer;
     scale: 1.1;
 }
 
-.fav:hover {
-    color: silver;
-    cursor: pointer;
-    scale: 1.1;
+.fav {
+    color: #fa2b43;
 }

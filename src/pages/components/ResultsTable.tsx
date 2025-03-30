@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ArrowDownward, ArrowUpward, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { getData, Sort } from "../../assets/utils";
@@ -28,9 +28,10 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
         getDogs();
     }, [dogData]);
 
-    useEffect(() => {
-
-    }, [favList]);
+    // useEffect(() => {
+    //     console.log('HERE', favList);
+    // }, [favList]);
+    console.log(favList);
 
     const getDogs = async () => {
         const response = await getData('/dogs', 'POST', JSON.stringify(dogData.resultIds));
@@ -59,20 +60,15 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
 
     };
 
-    const favorite = (e: React.MouseEvent) => {
-        const element = e.target as HTMLElement;
-        if (element.parentElement?.id) {
-            setFavList([...favList, element.parentElement?.id]);
-        }
-    };
-
-    const unfavorite = (e: React.MouseEvent) => {
-        const element = e.target as HTMLElement;
-        if (element.parentElement?.id) {
+    const toggleFav = (dogId: string) => {
+        if (favList.includes(dogId)) {
             const copyFavList = [...favList];
-            const index = favList.indexOf(element.parentElement.id);
+            const index = favList.indexOf(dogId);
             copyFavList.splice(index, 1);
+            console.log(copyFavList);
             setFavList(copyFavList);
+        } else {
+            setFavList([...favList, dogId]);
         }
     };
 
@@ -80,7 +76,11 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell id="fav-col-header"><div className="table-header-wrapper">{favList.length ? <Favorite /> : <FavoriteBorder />}</div></TableCell>
+                    <TableCell id="fav-col-header">
+                        <IconButton className="table-header-wrapper">
+                            {favList.length ? <Favorite className="fav"/> : <FavoriteBorder className="fav-border"/>}
+                        </IconButton>
+                    </TableCell>
                     <TableCell id="img-col-header">Image</TableCell>
                     <TableCell id="name-col-header">Name</TableCell>
                     <TableCell align="center">Age</TableCell>
@@ -94,15 +94,14 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
             </TableHead>
             <TableBody>
                 {dogList.map((dog) => {
-                    console.log(dog.id);
-                    console.log(favList);
-                    console.log('THIS DOG', dog.id, dog.id in favList);
                     return (
                         <TableRow key={dog.id}>
-                            <TableCell id={dog.id} className="fav-cell">
-                                {dog.id in favList ?
-                                    <Favorite className="fav" onClick={unfavorite} /> :
-                                    <FavoriteBorder className="fav-border" onClick={favorite} />}
+                            <TableCell className="fav-cell">
+                                <IconButton value={dog.id} onClick={() => toggleFav(dog.id)}>
+                                    {favList.includes(dog.id) ?
+                                        <Favorite className="fav" /> :
+                                        <FavoriteBorder className="fav-border" />}
+                                </IconButton>
                             </TableCell>
                             <TableCell className="img-cell"><a target="_blank" href={dog.img}><img className="dog-img" src={dog.img} /></a></TableCell>
                             <TableCell>{dog.name}</TableCell>
