@@ -79,7 +79,7 @@ html {
 
 #img-col-header,
 td.img-cell {
-    width: 10%;
+    width: 350px;
 }
 
 #name-col-header,
@@ -89,7 +89,6 @@ td.img-cell {
 
 #age-col-header {
     min-width: 100%;
-    justify-content: center;
 }
 
 #zip-col-header {
@@ -132,6 +131,6 @@ button:hover .fav-border, button:hover .fav {
     color: #fa2b43;
 }
 
-.arrow-visible {
+th:hover .arrow-visible, .arrow-visible {
     opacity: 100%;
 }

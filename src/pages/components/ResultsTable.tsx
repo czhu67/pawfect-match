@@ -104,7 +104,7 @@ export default function ResultsTable({ dogData, sort, setSort, favList, setFavLi
                             </TableCell>
                             <TableCell className="img-cell"><a target="_blank" href={dog.img}><img className="dog-img" src={dog.img} /></a></TableCell>
                             <TableCell>{dog.name}</TableCell>
-                            <TableCell align="center">{dog.age}</TableCell>
+                            <TableCell>{dog.age}</TableCell>
                             <TableCell align="center">{dog.zip_code}</TableCell>
                             <TableCell>{dog.breed}</TableCell>
                         </TableRow>

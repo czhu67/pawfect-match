@@ -33,7 +33,7 @@ export default function Search({favList, setFavList}: SearchProps) {
     useEffect(() => {
         getBreeds();
         searchDogs();
-    }, []);
+    }, [sort]);
 
     const getBreeds = async () => {
         const response = await getData('/dogs/breeds', 'GET');
