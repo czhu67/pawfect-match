@@ -16,11 +16,18 @@ export default function Match({ favList, matchId, setMatchId }: MatchProps) {
     useEffect(() => {
         if (!matchId) {
             getMatch();
+        } else if (!dog[0]?.id) {
+            getDogs([matchId], setDog);
         }
     }, []);
 
     useEffect(() => {
-        getDogs([matchId], setDog);
+        console.log('here', matchId);
+        if (matchId) {
+            getDogs([matchId], setDog);
+        } else {
+            console.log('down here', dog);
+        }
     }, [matchId]);
 
     const getMatch = async () => {
@@ -34,7 +41,7 @@ export default function Match({ favList, matchId, setMatchId }: MatchProps) {
     return (
         <div className="page-container">
             <Header />
-            {dog.length ?
+            {dog[0]?.id ?
                 <Card id="match-card">
                     <CardContent id="match-card-content">
                         <Typography variant="h4">
